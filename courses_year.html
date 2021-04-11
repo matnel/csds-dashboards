@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CSDS teaching</title>
+</head>
+<body>
+
+    {% for time, courses in courses_by_start_month.items() %}
+        <h1>{{ time.strftime("%B %Y") }}</h1>
+        <table>
+        {% for course in courses %}
+          <tr>
+            <td><a href="https://studies.helsinki.fi{{ course['coursePageUrl'] }}">{{ course['code'] }}: {{ course['clean_name'] }}</a></td>
+            <td>{{ course['start_date'].strftime('%d.%m.') }}-{{ course['end_date'].strftime('%d.%m.') }}</td>
+            <td>{{ ', '.join( course['teachers'] ) }}</td>
+          </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
+
+
+
+</body>
+</html>
