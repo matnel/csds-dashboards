@@ -1,20 +1,29 @@
 import collections
 import datetime
+from jinja2 import Template
 
 from pyhy import people, courses
 
+import argparse
 
-## people working in CSDS
-staff = people.by_organisation( [62060775] )
+parser = argparse.ArgumentParser(description="Produce teaching schedule for an organisational unit at University of Helsinki.")
+parser.add_argument('organization_id', type=int, help='organization ID number')
+parser.add_argument('--year', dest='year', type = int, default=courses._guess_study_year(), help='year of data production')
+
+args = parser.parse_args()
+
+year = args.year
+
+## people working in the organisation
+staff = people.by_organisation( [ args.organization_id ] )
 
 names = map( lambda person: person['firstnames'] + ' ' + person['lastname'], staff )
 names = list( names )
 
-print( names )
 staff_courses = {}
 
 for name in names:
-    for course in courses.search( name, academic_year = 2018 ):
+    for course in courses.search( name, academic_year = year ):
         staff_courses[ course['curId'] ] = course
 
 staff_courses = staff_courses.values()
@@ -24,8 +33,6 @@ by_starting_time = collections.defaultdict( list )
 for course in staff_courses:
 
     teachers = []
-    print( course )
-    print( course.keys() )
     for set in course['studyGroupSets']:
         for group in set['studySubGroups']:
             teachers += group['teacherNames']
@@ -41,7 +48,6 @@ for course in staff_courses:
 
     by_starting_time[ starting ].append( course )
 
-from jinja2 import Template
 
 template = Template( open('courses_year.html').read() )
-open('2018.html', 'w').write( template.render( courses_by_start_month = by_starting_time ) )
+open( str( year ) + '.html', 'w').write( template.render( courses_by_start_month = by_starting_time ) )
