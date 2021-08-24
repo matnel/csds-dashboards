@@ -9,6 +9,7 @@ import argparse
 parser = argparse.ArgumentParser(description="Produce teaching schedule for an organisational unit at University of Helsinki.")
 parser.add_argument('organization_id', type=int, help='organization ID number')
 parser.add_argument('--year', dest='year', type = int, default=courses._guess_study_year(), help='year of data production')
+parser.add_argument('--output', dest='output', type = str, default='./', help='where output is stored')
 
 args = parser.parse_args()
 
@@ -50,4 +51,4 @@ for course in staff_courses:
 
 
 template = Template( open('courses_year.html').read() )
-open( str( year ) + '.html', 'w').write( template.render( courses_by_start_month = by_starting_time ) )
+open( args.output + str( year ) + '.html', 'w').write( template.render( courses_by_start_month = by_starting_time ) )
