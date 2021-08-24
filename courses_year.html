@@ -5,7 +5,7 @@
 </head>
 <body>
 
-    {% for time, courses in courses_by_start_month.items() %}
+    {% for time, courses in data %}
         <h1>{{ time.strftime("%B %Y") }}</h1>
         <table>
         {% for course in courses %}

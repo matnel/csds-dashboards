@@ -49,6 +49,8 @@ for course in staff_courses:
 
     by_starting_time[ starting ].append( course )
 
+data = list( by_starting_time.items() )
+data.sort( key = lambda x: x[0] )
 
 template = Template( open('courses_year.html').read() )
-open( args.output + str( year ) + '.html', 'w').write( template.render( courses_by_start_month = by_starting_time ) )
+open( args.output + str( year ) + '.html', 'w').write( template.render( data = data ) )
