@@ -40,7 +40,8 @@ for course in staff_courses:
 
     course['teachers'] = list( map( lambda x: x.replace('␟', '').strip() , teachers ) )
 
-    course['clean_name'] = course['name']['en'] if 'en' in course['name'] else course['name']['fi']
+    ## seems to be only direct names at this time, no language variants.
+    course['clean_name'] = course['name'] # ['en'] if 'en' in course['name'] else course['name']['fi']
 
     course['start_date'] = datetime.datetime.strptime( course['activityPeriod']['startDate'], '%Y-%m-%d' )
     course['end_date'] = datetime.datetime.strptime( course['activityPeriod']['endDate'], '%Y-%m-%d' )
