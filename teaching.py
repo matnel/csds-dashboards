@@ -2,7 +2,7 @@ import collections
 import datetime
 from jinja2 import Template
 
-from pyhy import people, courses
+from py4hy import people, courses
 
 import argparse
 
